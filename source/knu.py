@@ -11,6 +11,20 @@ def beepsound():
     du = 3000     # 1000 ms ==1second
     sd.Beep(fr, du) # winsound.Beep(frequency, duration)
 
+def countdown(t):
+	try :
+		while t:
+			mins, secs = divmod(t, 60)
+			timer = '{:02d}:{:02d}'.format(mins, secs)
+			print(timer, end="\r")
+			sleep(1)
+			t -= 1
+	except KeyboardInterrupt as kI:
+		print(f'ERROR : {kI}')
+		exit()
+	except Exception as ex:
+		print(f'ERROR : {ex}')
+
 def crawling(code) :
 	try :
 		URL = "http://my.knu.ac.kr/stpo/stpo/cour/lectReqCntEnq/list.action"
@@ -82,16 +96,16 @@ if __name__ == "__main__":
 		try :
 			subj = crawling(subj_cd)
 			print(subj)
-			if std != subj['lect_quota'] :
-				std = subj['lect_quota']
+			if std != subj['lect_req_cnt'] :
+				std = subj['lect_req_cnt']
 				if subj['lect_quota'] > subj['lect_req_cnt'] :
 					for i in range(3) :
 						req(**subj)
-						sleep(2)
-			sleep(5)
+						countdown(2)
+			countdown(5)
 
 		except Exception as ex :
-			sleep(5)
+			countdown(5)
 
 
 
