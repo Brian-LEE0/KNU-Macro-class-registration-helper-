@@ -1,16 +1,9 @@
-import datetime
 from time import sleep
 import requests
-import winsound as sd
 import re
 
 TOKEN = ''
 subj_cd = ''
-def beepsound():
-    fr = 2000    # range : 37 ~ 32767
-    du = 3000     # 1000 ms ==1second
-    sd.Beep(fr, du) # winsound.Beep(frequency, duration)
-
 def countdown(t):
 	try :
 		while t:
@@ -72,7 +65,6 @@ def req(**sub):
 	    print(mes['message'])
 	except :
 		print(f'ERROR : 올바른 토큰이 아닙니다!')
-		beepsound()
 
 
 

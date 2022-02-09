@@ -5,7 +5,7 @@ block_cipher = None
 
 
 a = Analysis(['knu.py'],
-             pathex=['C:\\Users\\liy90\\Documents\\GitHub\\KNU-Macro-class-registration-helper-\\source'],
+             pathex=[],
              binaries=[],
              datas=[],
              hiddenimports=[],
