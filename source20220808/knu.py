@@ -32,7 +32,7 @@ def countdown(t):
 def crawling(subj) :
 	global driver
 	try :
-		driver.set_window_size(2000, 1000)
+		driver.set_window_size(3000, 5000)
 		driver.get('https://knuin.knu.ac.kr/public/stddm/lectPlnInqr.knu')
 		driver.implicitly_wait(0.1)
 		driver.find_element(By.XPATH,'//*[@id="schCode"]/option[2]').click()
@@ -53,9 +53,9 @@ def crawling(subj) :
 		'subj_current' : int(subj_current)
 		}
 	except Exception as ex :
-		print(ex)
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
-		driver.quit()
+		countdown(1)
+		crawling(subjcd,idx)
 
 
 def init_req(**sub):
