@@ -40,7 +40,7 @@ def crawling(subj) :
 		driver.find_element(By.XPATH,'//*[@id="schCodeContents"]').send_keys(subj[0:8])
 		driver.implicitly_wait(0.1)
 		driver.find_element(By.XPATH,'//*[@id="btnSearch"]').click()
-		driver.implicitly_wait(0.1)
+		driver.implicitly_wait(3)
 		subj_cd = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(int(subj[9:])-1)+'_6"]/nobr').text
 		subj_name = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(int(subj[9:])-1)+'_7"]/nobr').text
 		subj_limit = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(int(subj[9:])-1)+'_16"]/nobr').text

@@ -22,8 +22,8 @@ def crawling(code) :
 	try :
 		URL = "http://my.knu.ac.kr/stpo/stpo/cour/lectReqCntEnq/list.action"
 		body = {
-			'lectReqCntEnq.search_sub_class_cde' : code[7:10],
-			'lectReqCntEnq.search_subj_cde' : code[0:7],
+			'lectReqCntEnq.search_sub_class_cde' : code[9:12],
+			'lectReqCntEnq.search_subj_cde' : code[0:8],
 			'searchValue' : code
 		}
 		web = requests.post(URL, data=body)
@@ -52,17 +52,17 @@ def crawling(code) :
 
 def req(**sub):
 	try :
-	    TARGET_URL = 'https://notify-api.line.me/api/notify'
-	    # 요청합니다.
-	    mes={'message': '\n[중요!]\n' + sub['subj_nm'] + '(' + sub['subj_cd'] + ')' + '\n정원 ' + str(sub['lect_quota'] - sub['lect_req_cnt']) + '명 발생!!\nsugang.knu.ac.kr'}
-	    response = requests.post(
-	    TARGET_URL,
-	    headers={
-	    'Authorization': 'Bearer ' + TOKEN
-	    },
-	    data=mes
-	    )
-	    print(mes['message'])
+		TARGET_URL = 'https://notify-api.line.me/api/notify'
+		# 요청합니다.
+		mes={'message': '\n[중요!]\n' + sub['subj_nm'] + '(' + sub['subj_cd'] + ')' + '\n정원 ' + str(sub['lect_quota'] - sub['lect_req_cnt']) + '명 발생!!\nsugang.knu.ac.kr'}
+		response = requests.post(
+		TARGET_URL,
+		headers={
+		'Authorization': 'Bearer ' + TOKEN
+		},
+		data=mes
+		)
+		print(mes['message'])
 	except :
 		print(f'ERROR : 올바른 토큰이 아닙니다!')
 
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 		print("#######################################")
 		subj_cd = input("과목코드를 입력해 주세요 : ").upper()
 		while 1 : 
-			if len(subj_cd) != 10 :
+			if len(subj_cd) != 12 :
 				subj_cd = input("올바른 과목코드를 입력해 주세요 : ").upper()
 			else :
 				break
