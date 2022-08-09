@@ -96,6 +96,7 @@ def req(**sub):
 
 if __name__ == "__main__":
 	std = 0
+	init()
 	try :
 		print("#######################################")
 		subj_cd = input("과목코드를 입력해 주세요 (ex : CLTR0023-001) : ").upper()
