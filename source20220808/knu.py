@@ -67,18 +67,17 @@ def init_crawling(year,semester_cd,subj_cd):
 	try :
 		global index
 		subj_info = (req_info_subjcode(year,semester_cd,subj_cd))["data"]
-
 		for data in subj_info :
 			if(data["crseNo"] == subj_cd) :
 				break
 			else :
 				index+=1
-		if(data < subj_info.len()):
+		if(index < len(subj_info)):
 			return {
-				'subj_name' : subj_info["sbjetNm"],
-				'subj_cd' : subj_info["crseNo"],
-				'subj_limit' : int(subj_info["attlcPrscpCnt"]),
-				'subj_current' : int(subj_info["appcrCnt"])
+				'subj_name' : subj_info[index]["sbjetNm"],
+				'subj_cd' : subj_info[index]["crseNo"],
+				'subj_limit' : int(subj_info[index]["attlcPrscpCnt"]),
+				'subj_current' : int(subj_info[index]["appcrCnt"])
 			}
 		else :
 			return -1
@@ -165,7 +164,7 @@ if __name__ == "__main__":
 	elif(semester == 4):
 		semester_cd = "CMBS001400003"
 
-	subj = crawling(year,semester_cd,subj_cd)
+	subj = init_crawling(year,semester_cd,subj_cd)
 	if(subj == -1) :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
 		countdown(5)
