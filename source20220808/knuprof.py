@@ -9,10 +9,14 @@ import requests
 
 TOKEN = ''
 temp = ''
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-chrome_options.add_argument("headless")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
+driver = ''
+
+def init() :
+	global driver
+	chrome_options = webdriver.ChromeOptions()
+	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+	chrome_options.add_argument("headless")
+	driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
 	
 
 def countdown(t):
@@ -45,12 +49,7 @@ def crawling(subjcd,idx) :
 		subj_name = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(idx-1)+'_7"]/nobr').text
 		subj_limit = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(idx-1)+'_16"]/nobr').text
 		subj_current = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(idx-1)+'_17"]/nobr').text
-		print({
-		'subj_name' : subj_name,
-		'subj_cd' : subj_cd,
-		'subj_limit' : int(subj_limit),
-		'subj_current' : int(subj_current)
-		})
+		
 		return {
 		'subj_name' : subj_name,
 		'subj_cd' : subj_cd,
@@ -60,6 +59,7 @@ def crawling(subjcd,idx) :
 	except Exception as ex :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
 		countdown(1)
+		init()
 		crawling(subjcd,idx)
 
 
@@ -97,6 +97,7 @@ def req(**sub):
 
 if __name__ == "__main__":
 	std = 0
+	init()
 	try :
 		print("#######################################")
 		subj_cd = input("담당교수님 성함을 입력해 주세요 (ex : 하이랜드) : ")

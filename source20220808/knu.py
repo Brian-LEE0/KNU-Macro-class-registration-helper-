@@ -9,10 +9,12 @@ import requests
 
 TOKEN = ''
 temp = ''
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
-chrome_options.add_argument("headless")
-driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
+def init() :
+	global driver
+	chrome_options = webdriver.ChromeOptions()
+	chrome_options.add_experimental_option('excludeSwitches', ['enable-logging'])
+	chrome_options.add_argument("headless")
+	driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()),options=chrome_options)
 	
 
 def countdown(t):
@@ -47,15 +49,17 @@ def crawling(subj) :
 		subj_current = driver.find_element(By.XPATH,'//*[@id="grid01_cell_'+ str(int(subj[9:])-1)+'_17"]/nobr').text
 
 		return {
-		'subj_name' : subj_name,
-		'subj_cd' : subj_cd,
-		'subj_limit' : int(subj_limit),
-		'subj_current' : int(subj_current)
+			'subj_name' : subj_name,
+			'subj_cd' : subj_cd,
+			'subj_limit' : int(subj_limit),
+			'subj_current' : int(subj_current)
 		}
+		
 	except Exception as ex :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
 		countdown(1)
-		crawling(subjcd,idx)
+		init()
+		crawling(subj)
 
 
 def init_req(**sub):
