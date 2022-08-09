@@ -70,10 +70,18 @@ def init_crawling(year,semester_cd,subj_cd):
 
 		for data in subj_info :
 			if(data["crseNo"] == subj_cd) :
-				return data[index]
+				break
 			else :
 				index+=1
-		return -1
+		if(data < subj_info.len()):
+			return {
+				'subj_name' : subj_info["sbjetNm"],
+				'subj_cd' : subj_info["crseNo"],
+				'subj_limit' : int(subj_info["attlcPrscpCnt"]),
+				'subj_current' : int(subj_info["appcrCnt"])
+			}
+		else :
+			return -1
 	except Exception as ex :
 		return -1
 
@@ -96,11 +104,11 @@ def crawling(year,semester_cd,subj_cd) :
 		
 
 
-def init_req(sub):
+def init_req(**sub):
 	try :
 	    TARGET_URL = 'https://notify-api.line.me/api/notify'
 	    # 요청합니다.
-	    mes={'message': sub['sbjetNm'] +'('+ sub['crseNo'] +')'+'과목의 정원변경 추적을 시작합니다.'}
+	    mes={'message': sub['subj_name'] +'('+ sub['subj_cd'] +')'+'과목의 정원변경 추적을 시작합니다.'}
 	    response = requests.post(
 	    TARGET_URL,
 	    headers={
@@ -112,7 +120,7 @@ def init_req(sub):
 	except :
 		print(f'ERROR : 올바른 토큰이 아닙니다!')
 
-def req(sub):
+def req(**sub):
 	try :
 	    TARGET_URL = 'https://notify-api.line.me/api/notify'
 	    # 요청합니다.
@@ -163,7 +171,7 @@ if __name__ == "__main__":
 		countdown(5)
 		exit(0)
 
-	init_req(subj)
+	init_req(**subj)
 
 	while 1 :
 		try : 
