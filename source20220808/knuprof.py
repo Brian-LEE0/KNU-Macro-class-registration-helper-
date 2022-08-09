@@ -58,9 +58,6 @@ def crawling(subjcd,idx) :
 		}
 	except Exception as ex :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
-		countdown(1)
-		init()
-		crawling(subjcd,idx)
 
 
 def init_req(**sub):
@@ -124,7 +121,9 @@ if __name__ == "__main__":
 			countdown(5)
 
 		except Exception as ex :
-			driver.quit()
+			driver.close()
+			print('드라이버 재실행 중')
+			init()
 			countdown(5)
 
 

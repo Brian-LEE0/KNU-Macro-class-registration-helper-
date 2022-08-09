@@ -9,6 +9,8 @@ import requests
 
 TOKEN = ''
 temp = ''
+driver = ''
+
 def init() :
 	global driver
 	chrome_options = webdriver.ChromeOptions()
@@ -57,9 +59,6 @@ def crawling(subj) :
 		
 	except Exception as ex :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
-		countdown(1)
-		init()
-		crawling(subj)
 
 
 def init_req(**sub):
@@ -115,7 +114,7 @@ if __name__ == "__main__":
 	init_req(**subj)
 
 	while 1 :
-		try :
+		try : 
 			subj = crawling(subj_cd)
 			print(subj)
 			if std != subj['subj_current'] :
@@ -125,9 +124,12 @@ if __name__ == "__main__":
 						req(**subj)
 						countdown(2)
 			countdown(5)
-
 		except Exception as ex :
-			driver.quit()
+			driver.close()
+			print('드라이버 재실행 중')
+			init()
 			countdown(5)
+
+	
 
 
