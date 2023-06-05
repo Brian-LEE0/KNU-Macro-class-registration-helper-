@@ -1,1 +1,5 @@
-*.DS_Store *.exe *.zip *.url *.pdf linguist-detectable=false 
+*.DS_Store linguist-detectable=false 
+*.exe linguist-detectable=false 
+*.zip linguist-detectable=false 
+*.url linguist-detectable=false 
+*.pdf linguist-detectable=false 
