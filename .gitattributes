@@ -1,6 +1,2 @@
-*.DS_Store linguist-detectable=false 
-*.exe linguist-detectable=false 
-*.zip linguist-detectable=false 
-*.url linguist-detectable=false 
-*.pdf linguist-detectable=false 
-*.toc linguist-detectable=false 
+* linguist-vendored
+*.py linguist-vendored=false
