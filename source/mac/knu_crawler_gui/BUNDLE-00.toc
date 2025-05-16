@@ -1,0 +1,3 @@
+([('knu_crawler_gui',
+   '/Users/inyounglee/KNU-Macro-class-registration-helper-/source/dist/knu_crawler_gui',
+   'EXECUTABLE')],)

@@ -1,9 +1,12 @@
+import json
 from time import sleep
 import requests
 import re
 
-TOKEN = ''
+BOT_TOKEN = ''
+CHAT_ID = ''
 subj_cd = ''
+
 def countdown(t):
 	try :
 		while t:
@@ -46,58 +49,79 @@ def crawling(code) :
 	except Exception as ex :
 		print(f'ERROR : 올바른 과목코드가 아닙니다 다시 확인해 주세요!')
 
-
-
-
+def get_chat_id(token):
+    """텔레그램 봇의 getUpdates API를 호출하여 가장 최근 채팅 ID를 가져옵니다."""
+    try:
+        url = f'https://api.telegram.org/bot{token}/getUpdates'
+        response = requests.get(url)
+        updates = response.json()
+        
+        if updates['ok'] and updates['result']:
+            # 가장 최근 업데이트에서 chat_id 가져오기
+            latest_update = updates['result'][-1]
+            chat_id = latest_update['message']['chat']['id']
+            print(f"채팅 ID를 성공적으로 가져왔습니다: {chat_id}")
+            return str(chat_id)
+        else:
+            print("채팅 ID를 가져올 수 없습니다. 봇에게 먼저 메시지를 보내주세요.")
+            print("텔레그램에서 봇을 찾아 아무 메시지나 보낸 후 프로그램을 다시 실행해주세요.")
+            exit()
+    except Exception as e:
+        print(f"ERROR: 채팅 ID 가져오기 실패! {e}")
+        exit()
 
 def req(**sub):
-	try :
-		TARGET_URL = 'https://notify-api.line.me/api/notify'
-		# 요청합니다.
-		mes={'message': '\n[중요!]\n' + sub['subj_nm'] + '(' + sub['subj_cd'] + ')' + '\n정원 ' + str(sub['lect_quota'] - sub['lect_req_cnt']) + '명 발생!!\nsugang.knu.ac.kr'}
-		response = requests.post(
-		TARGET_URL,
-		headers={
-		'Authorization': 'Bearer ' + TOKEN
-		},
-		data=mes
-		)
-		print(mes['message'])
-	except :
-		print(f'ERROR : 올바른 토큰이 아닙니다!')
-
+    try:
+        message = '\n[중요!]\n' + sub['subj_nm'] + '(' + sub['subj_cd'] + ')' + '\n정원 ' + str(sub['lect_quota'] - sub['lect_req_cnt']) + '명 발생!!\nsugang.knu.ac.kr'
+        
+        url = f'https://api.telegram.org/bot{BOT_TOKEN}/sendMessage'
+        data = {
+            'chat_id': CHAT_ID,
+            'text': message
+        }
+        
+        response = requests.post(url, data=data)
+        print(response)
+    except Exception as e:
+        print(f'ERROR: 텔레그램 메시지 전송 실패! {e}')
 
 
 if __name__ == "__main__":
-	std = 0
-	try :
-		print("#######################################")
-		subj_cd = input("과목코드를 입력해 주세요 : ").upper()
-		while 1 : 
-			if len(subj_cd) != 12 :
-				subj_cd = input("올바른 과목코드를 입력해 주세요 : ").upper()
-			else :
-				break
-		TOKEN = input("발급받은 라인 토큰 코드를 입력해 주세요 : ")
-		print("#######################################")
+    std = 0
+    try:
+        print("#######################################")
+        subj_cd = input("과목코드를 입력해 주세요 : ").upper()
+        while 1: 
+            if len(subj_cd) != 12:
+                subj_cd = input("올바른 과목코드를 입력해 주세요 : ").upper()
+            else:
+                break
+        
+        BOT_TOKEN = input("텔레그램 봇 토큰을 입력해 주세요 : ")
+        print("채팅 ID를 가져오는 중... (봇에 메시지를 먼저 보냈는지 확인해주세요)")
+        CHAT_ID = get_chat_id(BOT_TOKEN)
+        print("#######################################")
 
-	except Exception as ex :
-		print(f'ERROR : {ex}')
+    except Exception as ex:
+        print(f'ERROR : {ex}')
 
-	while 1 :
-		try :
-			subj = crawling(subj_cd)
-			print(subj)
-			if std != subj['lect_req_cnt'] :
-				std = subj['lect_req_cnt']
-				if subj['lect_quota'] > subj['lect_req_cnt'] :
-					for i in range(3) :
-						req(**subj)
-						countdown(2)
-			countdown(5)
+    while 1:
+        try:
+            subj = crawling(subj_cd)
+            print(subj)
+            if std != subj['lect_req_cnt']:
+                std = subj['lect_req_cnt']
+                if subj['lect_quota'] > subj['lect_req_cnt']:
+                    for i in range(3):
+                        req(**subj)
+                        countdown(2)
+            
+            countdown(5)
+            
 
-		except Exception as ex :
-			countdown(5)
+        except Exception as ex:
+            print(f'ERROR : {ex}')
+            countdown(5)
 
 
 
